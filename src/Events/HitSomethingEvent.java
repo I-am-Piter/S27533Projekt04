@@ -1,4 +1,9 @@
 package Events;
 
-public class HitSomethingEvent {
+import java.util.EventObject;
+
+public class HitSomethingEvent extends EventObject {
+    public HitSomethingEvent(Object source) {
+        super(source);
+    }
 }

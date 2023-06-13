@@ -6,7 +6,7 @@ public class DirectionEvent extends EventObject {
 
     Direction direction;
 
-    DirectionEvent(Direction direction,Object source){
+    DirectionEvent(Direction direction, Object source){
         super(source);
         this.direction = direction;
     }
