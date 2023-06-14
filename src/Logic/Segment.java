@@ -14,4 +14,6 @@ public class Segment {
         this.y = y;
     }
     public void setDirection(Direction direction){}
+
+    public Direction getDirection(){return null;}
 }

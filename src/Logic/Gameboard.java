@@ -13,6 +13,7 @@ public class Gameboard implements DirectionEventListener, GetData, TickListener 
     boolean gotDirection;
     Snake snake;
     Food food;
+    public SaveManager sm;
 
     public Gameboard(int x, int y){
         gameboard = new int[y][x];
@@ -50,9 +51,25 @@ public class Gameboard implements DirectionEventListener, GetData, TickListener 
         }
         return false;
     }
+
+    static ArrayList<ScoreEventListener> scoreEventList = new ArrayList<>();
+    public static void addScoreEventListener(ScoreEventListener sel){
+        scoreEventList.add(sel);
+    }
+    public static void rmScoreEventListener(ScoreEventListener sel){
+        scoreEventList.remove(sel);
+    }
+    private void fireScoreChanged(int size) {
+        ScoreEvent se = new ScoreEvent(this,size);
+        for (ScoreEventListener sel:scoreEventList) {
+            sel.ScoreChanged(se);
+        }
+    }
+
     public void updateTab(){
         if(ateFood()){
             fireAteFood();
+            fireScoreChanged(snake.body.size()-1);
         }
         if(!hitSmth()) {
             for (int i = 0; i < gameboard.length; i++) {
@@ -67,6 +84,8 @@ public class Gameboard implements DirectionEventListener, GetData, TickListener 
             fireDataChanged();
         }else{
             fireHitSmth();
+            System.out.println("u hit something");
+            sm.addScore(snake.body.size()-1);
         }
     }
 
@@ -83,6 +102,12 @@ public class Gameboard implements DirectionEventListener, GetData, TickListener 
 //                }
 //            }
 //        }
+        for (int i = 1; i < snake.body.size(); i++) {
+            Segment tmp = snake.body.get(i);
+            if(s.x == tmp.x && s.y == tmp.y){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -129,6 +154,7 @@ public class Gameboard implements DirectionEventListener, GetData, TickListener 
     }
     @Override
     public void directionChanged(DirectionEvent de) {
+        Direction tmpDir = de.getDirection();
         currentDir = de.getDirection();
         if(SaveManager.hasNick) {
             if (gotDirection == false) {
@@ -139,6 +165,7 @@ public class Gameboard implements DirectionEventListener, GetData, TickListener 
             System.out.println("Brak nicku");
         }
     }
+
     @Override
     public int[][] getTable() {
         return gameboard;
@@ -150,5 +177,8 @@ public class Gameboard implements DirectionEventListener, GetData, TickListener 
     @Override
     public void tick(TickEvent te) {
         updateTab();
+    }
+    public GameManager getGm(){
+        return gm;
     }
 }

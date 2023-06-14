@@ -1,18 +1,10 @@
 package Visuals;
 
 import Controller.GetData;
-import Enums.Direction;
 import Events.DataChangedEvent;
 import Events.DataChangedListener;
-import Events.DirectionEvent;
-import Events.DirectionEventListener;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements DataChangedListener {
     static GetData getDataint;

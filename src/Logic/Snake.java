@@ -1,5 +1,6 @@
 package Logic;
 
+import Enums.Direction;
 import Enums.Type;
 import Events.*;
 
@@ -41,11 +42,17 @@ public class Snake
             case DOWN -> tmpHead.y++;
             case UP -> tmpHead.y--;
         }
-        Segment tmp;
+        int tmpx2 = 0;
+        int tmpy2 = 0;
+        Segment tmp = null;
         for (int i = 1; i < body.size(); i++) {
             tmp = body.get(i);
-            tmpx = tmp.x;
-            tmpy = tmp.y;
+            tmpx2 = tmp.x;
+            tmpy2 = tmp.y;
+            tmp.x = tmpx;
+            tmp.y = tmpy;
+            tmpx = tmpx2;
+            tmpy = tmpy2;
         }
     }
 
@@ -56,6 +63,27 @@ public class Snake
 
     @Override
     public void directionChanged(DirectionEvent de) {
-        body.get(0).setDirection(de.getDirection());
+        if(isOk(de.getDirection())) {
+            body.get(0).setDirection(de.getDirection());
+        }
+    }
+    private boolean isOk(Direction dir) {
+        Direction currentDir = body.get(0).getDirection();
+        if(currentDir == null){
+            return true;
+        }
+        switch (currentDir){
+            case DOWN, UP -> {
+                if((dir == Direction.LEFT || dir == Direction.RIGHT)){
+                    return true;
+                }
+            }
+            case RIGHT,LEFT -> {
+                if((dir == Direction.DOWN || dir == Direction.UP)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

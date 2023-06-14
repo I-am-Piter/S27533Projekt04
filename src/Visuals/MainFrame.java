@@ -2,10 +2,7 @@ package Visuals;
 
 import Controller.GetData;
 import Enums.Direction;
-import Events.DirectionEvent;
-import Events.DirectionEventListener;
-import Events.NickEvent;
-import Events.NickEventListener;
+import Events.*;
 import Logic.SaveManager;
 
 import javax.swing.*;
@@ -13,10 +10,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class MainFrame extends JFrame {
-    GetData data;
-    JTable jTable;
+public class MainFrame extends JFrame implements ShowTop10EventListener {
     GamePanel gp;
+    ScorePanel sp;
     public MainFrame() {
         {
             JFrame nickFrame = new JFrame();
@@ -85,9 +81,12 @@ public class MainFrame extends JFrame {
         this.setLayout(new BorderLayout());
         this.add(gp,BorderLayout.PAGE_END);
 
+        this.sp = new ScorePanel(this);
+        this.add(sp,BorderLayout.PAGE_START);
+
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(1280,720);
+        this.setSize(900,720);
     }
     static ArrayList<DirectionEventListener> directionEventList = new ArrayList<>();
     public static void addDirectionEventListener(DirectionEventListener del){
@@ -117,5 +116,19 @@ public class MainFrame extends JFrame {
     }
     public GamePanel getGp(){
         return gp;
+    }
+    public ScorePanel getSp(){
+        return sp;
+    }
+
+    @Override
+    public void showTop10(ShowTop10Event st1e) {
+        Best10Scores b1s = new Best10Scores(st1e.getNames(), st1e.getScores());
+        this.getContentPane().removeAll();
+        this.repaint();
+
+        this.add(b1s);
+        this.pack();
+        this.setVisible(true);
     }
 }
