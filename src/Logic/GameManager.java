@@ -6,27 +6,28 @@ import Events.TickListener;
 import java.util.ArrayList;
 
 public class GameManager extends Thread{
-    Gameboard gameboard;
     static int points = 0;
-    ArrayList<TickListener> tickListeners;
-    public GameManager(Gameboard gameboard){
-        this.gameboard = gameboard;
+    static ArrayList<TickListener> tickListeners;
+    public GameManager(){
         this.tickListeners = new ArrayList<>();
     }
 
     @Override
     public void run() {
-        try {
-            this.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while(true) {
+            try {
+                this.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            fireTick();
+            System.out.println("tick");
         }
-        fireTick();
     }
-    void addTickListener(TickListener tl){
+    public static void addTickListener(TickListener tl){
         tickListeners.add(tl);
     }
-    void rmTickListener(TickListener tl){
+    public static void rmTickListener(TickListener tl){
         tickListeners.remove(tl);
     }
     void fireTick(){

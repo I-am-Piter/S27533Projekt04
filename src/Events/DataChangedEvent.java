@@ -8,4 +8,7 @@ public class DataChangedEvent extends EventObject {
         super(source);
         this.gameboard = gameboard;
     }
+    public int[][] getData(){
+        return gameboard;
+    }
 }

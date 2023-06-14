@@ -4,15 +4,14 @@ import Enums.Direction;
 import Enums.Type;
 
 public class Segment {
-    Direction direction;
     Type type;
     int x;
     int y;
 
-    public Segment(Direction direction,Type type,int x,int y){
-        this.direction = direction;
+    public Segment(Type type,int x,int y){
         this.type = type;
         this.x = x;
         this.y = y;
     }
+    public void setDirection(Direction direction){}
 }
